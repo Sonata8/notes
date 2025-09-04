@@ -1,0 +1,6 @@
+site_name: My Notes
+
+theme:
+  name: material
+
+site_url: https://sonata8.github.io/notes/
