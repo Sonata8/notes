@@ -1,22 +1,32 @@
-name: Deploy MkDocs site
+name: Deploy MkDocs site to GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - main  # 每次 push 到 main 分支时触发
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
-      - run: pip install mkdocs-material
-      - run: mkdocs build --site-dir site
-      - uses: peaceiris/actions-gh-pages@v3
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          pip install mkdocs mkdocs-material
+
+      - name: Build MkDocs site
+        run: mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v6
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./site
-          destination_dir: notes
+          publish_branch: gh-pages
