@@ -1,7 +1,15 @@
 site_name: My Notes
 
 theme:
+  font:
+    code: JetBrains Mono
   name: material
   language: zh
+    features:
+    - navigation.path
+    - navigation.top
 
 site_url: https://sonata8.github.io/notes/
+
+plugins:
+  - tags
