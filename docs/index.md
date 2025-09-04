@@ -18,4 +18,4 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ## MathJax test
 
-$h=\frac{1}/{2}gt^2$
+$h=\frac{1}{2}gt^2$
