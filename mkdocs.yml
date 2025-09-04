@@ -5,7 +5,7 @@ theme:
     code: JetBrains Mono
   name: material
   language: zh
-    features:
+  features:
     - navigation.path
     - navigation.top
 
