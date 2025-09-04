@@ -19,5 +19,4 @@ jobs:
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./site
-          external_repository: Sonata8/sonata8.github.io
           destination_dir: notes
