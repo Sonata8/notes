@@ -2,5 +2,6 @@ site_name: My Notes
 
 theme:
   name: material
+  language: zh
 
 site_url: https://sonata8.github.io/notes/
