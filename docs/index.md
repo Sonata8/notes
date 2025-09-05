@@ -1,21 +1,7 @@
-# Welcome to MkDocs
+# SYSU Course Notes
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+我是 Sonata8，中山大学大一在读。目前专业为岭南学院经济学类。
 
-## Commands
+这个网站记录我本科期间所学课程的笔记。分为**学校课程**与**自学课程**两大类。
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
-
-## MathJax/KaTeX test
-
-$h=\frac{1}{2}gt^2$
+数学公式测试：$\int_{0}^{1} x^2 \, dx = \left. \frac{x^3}{3} \right|_0^1 = \frac{1}{3}$
