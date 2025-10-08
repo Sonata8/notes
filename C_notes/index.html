@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
       
       
 
@@ -312,6 +312,23 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos="7 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="cm">/* number of characters stored */</span><span class="w"> </span>
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos="8 "></span></a><span class="p">}</span>
 </code></pre></div>
+<h1 id="_2">宏定义</h1>
+<p>在有参数的宏定义标识符中，会<strong>先把参数中存在的宏展开</strong>，然后把标识符所在的位置替换成<strong>展开后的实际内容</strong>。<strong>但是</strong>如果替换内容中<strong>直接</strong>对参数使用了 <code>#</code>（stringize）或 <code>##</code>（token-paste），该参数在进入 <code>#</code>/<code>##</code> 前就<strong>不会</strong>先宏展开。</p>
+<p>例如，我们想要定义一个调用后可以输出调用时所在行和文件的宏，<strong>下面的写法是错误的</strong>。</p>
+<div class="highlight"><span class="filename">C</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a><span class="cp">#define STR_BAD(x) #x</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a><span class="cp">#define LINE_BAD STR_BAD(__LINE__)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LINE_BAD</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 这里 s 会成为 &quot; __LINE__ &quot; 而不是 &quot;50&quot; */</span>
+</code></pre></div>
+<p>想要解决这个问题，我们需要用一种“<strong>逐步展开</strong>”的技巧：</p>
+<div class="highlight"><span class="filename">C</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a><span class="cp">#define STR_HELPER(x) #x</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos="2 "></span></a><span class="cp">#define STR(x) STR_HELPER(x)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos="3 "></span></a><span class="cp">#define LINE_FILE &quot;Line &quot; STR(__LINE__) &quot; of file &quot; __FILE__</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos="4 "></span></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos="5 "></span></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos="6 "></span></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LINE_FILE</span><span class="p">;</span>
+</code></pre></div>
+<p>此时，我们的过程是：首先把<code>LINE_FILE</code>的内容替换了；然后，我们要先替换<code>STR(__LINE__)</code>为<code>STR_HELPER(x)</code>、<code>__FILE__</code>则被替换为文件名称。由于<code>STR(x)</code>中<strong>没有直接使用<code>#</code></strong>，因此先替换了<code>__LINE__</code>，然后再传入<code>STR_HELPER(x)</code>给“串化”。如此得到了我们希望的效果。</p>
 
 
 
@@ -369,7 +386,7 @@
       <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.top"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
         <script src="../javascripts/katex.js"></script>
       
